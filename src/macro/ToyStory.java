@@ -5,15 +5,15 @@ import java.util.List;
 
 public class ToyStory {
     private List<Toy> listToys;
-    private LoadListToys loadListToys;
+    private ReaderListToysFromFile readerListToysFromFile;
 
     public ToyStory(String nameCSVFile) {
-        this.loadListToys = new LoadListToys(nameCSVFile);
+        this.readerListToysFromFile = new ReaderListToysFromFile(nameCSVFile);
         this.listToys = new ArrayList<Toy>();
     }
 
-    protected void createListToys(){
-        List<List<String>> lists = loadListToys.readFile();
+    protected List<Toy> createListToys(){
+        List<List<String>> lists = readerListToysFromFile.readFile();
         lists.forEach(strings ->
                 listToys.add(
                         new Toy(
@@ -24,13 +24,15 @@ public class ToyStory {
                         )
                 )
         );
+        return listToys;
 
     }
 
     public void print(){
-        createListToys();
+        RaffleToys raffleToys = new RaffleToys(createListToys());
+        raffleToys.getRandomToys();
 //        listToys.stream().sorted();
-        listToys.forEach(toy -> toy.open());
+        //listToys.forEach(toy -> toy.open());
     }
 
     public int getLength(){

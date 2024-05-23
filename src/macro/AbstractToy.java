@@ -7,4 +7,6 @@ public abstract class AbstractToy {
     protected int quantity;
 
     public abstract void setWeight(float weight);
+
+
 }

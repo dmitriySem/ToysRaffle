@@ -9,13 +9,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class LoadListToys {
+public class ReaderListToysFromFile {
 
     private String CSV_FILE;
 
     private final String COMMA_DELIMITER = ";";
 
-    public LoadListToys(String CSV_FILE) {
+    public ReaderListToysFromFile(String CSV_FILE) {
         this.CSV_FILE = CSV_FILE;
     }
 
