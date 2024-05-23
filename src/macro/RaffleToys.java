@@ -7,17 +7,14 @@ import java.util.*;
 
 public class RaffleToys {
 
+    private List<Toy> listPrizzeToys; //список призовых игрушек, которые ожидают выдачи
+
     private List<Toy> listToys;
     private static final List<String> listanswers = new ArrayList<>(List.of("yes","да", "нуы", "lf", "y", "д"));
 
     public RaffleToys(List<Toy> listToys) {
         this.listToys = listToys;
-
-        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
-
-        symbols.setGroupingSeparator(' ');
-        formatter.setDecimalFormatSymbols(symbols);
+        this.listPrizzeToys = new ArrayList<>();
     }
 
     public void updateWeigthToys(){
@@ -38,12 +35,9 @@ public class RaffleToys {
                 }
             });
         }
-
-
     }
 
-    public Toy getRandomToys(){
-        updateWeigthToys();
+    public void getRandomToys(){
         Random random = new Random();
         float randomFloat = random.nextFloat();
 //        System.out.println("randomFloat:" + String.format(Locale.ROOT, "%.2f", randomFloat));
@@ -55,13 +49,34 @@ public class RaffleToys {
 //                    System.out.println();
                     return Float.compare(Math.abs(toy1.weight-randomFloat),Math.abs(toy2.weight-randomFloat));
                 }).get();
+        if (prizzToy.quantity != 0) {
+            listPrizzeToys.add(prizzToy);
+            System.out.println("Выпала призовая игрушка: " + prizzToy.name);
+        }
 //        System.out.println("prizzToy: " + prizzToy);
 //        System.out.println();
 //        System.out.println();
 //        System.out.println();
 
 //        listToys.stream().forEach(toy -> System.out.println(toy));
-    return prizzToy;
     }
+
+    public void getToy(){
+//        System.out.println("listPrizzeToys " + listPrizzeToys.size());
+        System.out.println("Выдана игрушка: " + listPrizzeToys.get(0).name);
+        listPrizzeToys.get(0).quantity =  listPrizzeToys.get(0).quantity - 1;
+            if (listPrizzeToys.get(0).quantity == 0){
+    //                Toy toy1 = listToys.stream().filter(toy -> toy.id == listPrizzeToys.get(0).id).findFirst().get();
+                listToys.remove(listPrizzeToys.get(0));
+            }
+            System.out.println("В раздаче осталось " + listPrizzeToys.get(0).quantity + " штук " + listPrizzeToys.get(0).name);
+            listPrizzeToys.remove(0);
+
+            System.out.println("Всего осталось игрушек: " + listToys.size());
+            System.out.println();
+//            listToys.forEach(toy -> System.out.println(toy));
+    }
+
+
 
 }

@@ -28,9 +28,17 @@ public class ToyStory {
 
     }
 
-    public void print(){
+    public void runRaffleToy(){
         RaffleToys raffleToys = new RaffleToys(createListToys());
-        raffleToys.getRandomToys();
+        raffleToys.updateWeigthToys();
+        System.out.println("Сегодня разыгрывается" + listToys.size() + " штук игрушек, из них: ");
+        listToys.forEach(toy -> System.out.println(toy.name + " - " + toy.quantity + " штук."));
+        System.out.println();
+
+            while (listToys.size() != 0){
+                raffleToys.getRandomToys();
+                raffleToys.getToy();
+            }
 //        listToys.stream().sorted();
         //listToys.forEach(toy -> toy.open());
     }
