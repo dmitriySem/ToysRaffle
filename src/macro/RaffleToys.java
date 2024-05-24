@@ -10,31 +10,44 @@ public class RaffleToys {
     private List<Toy> listPrizzeToys; //список призовых игрушек, которые ожидают выдачи
 
     private List<Toy> listToys;
-    private static final List<String> listanswers = new ArrayList<>(List.of("yes","да", "нуы", "lf", "y", "д"));
+    private static final List<String> listanswers = new ArrayList<>(List.of("yes","да", "нуы", "lf", "y", "д", "н"));
+    private Scanner scanner;
 
     public RaffleToys(List<Toy> listToys) {
         this.listToys = listToys;
         this.listPrizzeToys = new ArrayList<>();
+        this.scanner = new Scanner(System.in);
+        this.scanner.useLocale(Locale.ROOT);
     }
 
     public void updateWeigthToys(){
+        while (true){
         System.out.println("Обновить вероятность выподания игрушек?");
-        Scanner scanner = new Scanner(System.in);
-        String answer = scanner.nextLine().toLowerCase(Locale.ROOT);
-        scanner.useLocale(Locale.ROOT);
-        if (listanswers.contains(answer)) {
-            listToys.forEach(toy -> {
-                System.out.println(toy.toString());
-                System.out.println("Изменить вес игрушки? Да/Нет");
-                String flagChang = scanner.nextLine().toLowerCase(Locale.ROOT);
+        String answer = scanner.nextLine().replace(",",".").toLowerCase(Locale.ROOT);
 
-                if (listanswers.contains(flagChang)){
-                    System.out.println("Введите новый вес игрушки от 0.0 до 1.0");
-                    float newWeight = scanner.nextFloat();
-                    toy.setWeight(newWeight);
-                }
-            });
-        }
+            if (listanswers.contains(answer)) {
+                listToys.forEach(toy -> {
+                    System.out.println(toy);
+                    System.out.println("Изменить вес игрушки? Да/Нет");
+
+
+                    if (listanswers.contains(scanner.nextLine().toLowerCase(Locale.ROOT))){
+                        System.out.println("Введите новый вес игрушки от 0.0 до 1.0");
+                        try {
+                            toy.setWeight(Float.parseFloat(scanner.nextLine().replace(",",".")));
+
+                        } catch (NumberFormatException e){
+                            System.out.println("Введите новый весм(частоту выподания) числом 0.0 до 1.0");
+                            toy.setWeight(Float.parseFloat(scanner.nextLine().replace(",",".")));
+                        }
+                    }
+                });
+            }
+            listToys.forEach(toy -> System.out.println(toy));
+            System.out.println("Продолжить розыгрышь игрушек?");
+            if (listanswers.contains(scanner.nextLine().toLowerCase(Locale.ROOT)))
+                break;
+            }
     }
 
     public void getRandomToys(){
@@ -69,13 +82,42 @@ public class RaffleToys {
     //                Toy toy1 = listToys.stream().filter(toy -> toy.id == listPrizzeToys.get(0).id).findFirst().get();
                 listToys.remove(listPrizzeToys.get(0));
             }
-            System.out.println("В раздаче осталось " + listPrizzeToys.get(0).quantity + " штук " + listPrizzeToys.get(0).name);
+            System.out.println("В раздаче осталось " + listPrizzeToys.get(0).quantity + " штук(и) " + listPrizzeToys.get(0).name);
             listPrizzeToys.remove(0);
 
-            System.out.println("Всего осталось игрушек: " + listToys.size());
+            System.out.println("Всего осталось игрушек: " + sumToys());
             System.out.println();
 //            listToys.forEach(toy -> System.out.println(toy));
     }
+
+    private int sumToys(){
+        int sum = 0;
+        for (Toy toy:listToys)
+            sum = sum + toy.quantity;
+        return sum;
+    }
+
+    public void raffleToy(){
+            updateWeigthToys();
+            while (true){
+                System.out.println("Сегодня разыгрывается " + sumToys() + " штук(и) игрушек, из них: ");
+                listToys.forEach(toy -> System.out.println(toy.name + " - " + toy.quantity + " штук(и)."));
+                System.out.println("Продолжить розыгрышь игрушек?");
+                if (listanswers.contains(scanner.nextLine().toLowerCase(Locale.ROOT)))
+                    break;
+            }
+        while (listToys.size() != 0){
+            getRandomToys();
+            getToy();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 
 
 

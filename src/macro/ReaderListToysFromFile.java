@@ -2,6 +2,7 @@ package macro;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class ReaderListToysFromFile {
     public List<List<String>>  readFile(){
         List<List<String>> collect = new ArrayList<>();
         try {
-            collect = Files.readAllLines(Paths.get(System.getProperty("user.dir") + File.separator + CSV_FILE))
+            collect = Files.readAllLines(Paths.get(System.getProperty("user.dir") + File.separator + CSV_FILE), StandardCharsets.UTF_8)
                     .stream()
                     .map(line -> Arrays.asList(line.split(COMMA_DELIMITER)))
                     .collect(Collectors.toList());

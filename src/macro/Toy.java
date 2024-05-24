@@ -28,11 +28,11 @@ public class Toy extends AbstractToy implements ToyItem{
 
     @Override
     public String toString() {
-        return "Toy{" +
+        return "Игрушка{" +
                 "id=" + id +
-                ", name=" + name +
-                ", weight=" + String.format(Locale.ROOT, "%.2f", weight)  +
-                ", quantity=" + quantity +
-                '}';
+                ", название=" + name +
+                ", частота выподания=" + String.format(Locale.ROOT, "%.2f", weight)  +
+                ", количество=" + quantity + "шт." +
+                " }";
     }
 }
